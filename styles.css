@@ -32,7 +32,7 @@ body {
     transition: transform 500ms ease;
 }
 
-.card:hover{
+.card:hover, .card:focus-within{
 transform:scale(1.05);
 }
 
@@ -44,12 +44,9 @@ transform:scale(1.05);
         hsl(20 0% 0%/ 0.3)20%,
         hsl(0 0% 0% /1)
     );
-    transform:translateY(65%);
-    transition: transform 500ms ease;
 }
-.card:hover .card-content{
-    transform: translateY(0);
-}
+
+
 .card-title{
     position: relative;
     width: max-content;
@@ -68,13 +65,46 @@ transform:scale(1.05);
     transition: transform 500ms ease;
 }
 
-.card:hover .card-title::after{
+.card:hover .card-title::after,
+.card:focus-within .card-title::after{
     transform: scaleX(1);
 }
 
 .card-body{
     color: rgb(255, 255, 255 / 0.85) ;
 }
+
+@media(hover){
+    .card-content{
+        transform:translateY(65%);
+        transition: transform 500ms ease;
+    }
+    .card-content > *:not(.card-title){
+        opacity: 0;
+        transition: opacity 500ms linear;
+    }
+    
+    .card:hover .card-content 
+    ,.card:focus-within .card-content{
+        transform: translateY(0);
+        transition-delay: 500ms;
+    }
+    
+    .card:focus-within .cardcontent{
+        transition-duration: 0ms;
+    }
+    .card:hover .card-content > *:not(.card-title),
+    .card:focus-within .card-content > *:not(.card-title){
+        opacity: 1;
+        transition-delay: 900ms;
+    }
+
+    .card-title::after{
+        transform: scalex(0);
+    }
+}
+
+
 .button{
     cursor: pointer;
     display: inline-block;
@@ -89,4 +119,21 @@ transform:scale(1.05);
 .button:focus {
     background-color: var(--clr-neutral-100);
 
+}
+
+@media (prefers-reduced-motion: reduce){
+    *,
+    *::before,
+    *::after{
+        animation-duration: 0.01ms
+        !important;
+        animation-iteration-count: 1
+        !important;
+        transition-duration: 0.01s
+        !important;
+        scroll-behavior: auto 
+        !important;
+        transition-delay: 0ms
+        !important;
+    }
 }
